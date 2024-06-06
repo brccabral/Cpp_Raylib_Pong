@@ -3,6 +3,11 @@
 int player_score = 0;
 int cpu_score = 0;
 
+Color green = Color{38, 185, 154, 255};
+Color darkGreen = Color{20, 160, 133, 255};
+Color lightGreen = Color{129, 204, 184, 255};
+Color yellow = Color{243, 213, 91, 255};
+
 class Ball
 {
 public:
@@ -13,7 +18,7 @@ public:
     float radius;
     void Draw() const
     {
-        DrawCircle(static_cast<int>(x), static_cast<int>(y), radius, WHITE);
+        DrawCircle(static_cast<int>(x), static_cast<int>(y), radius, yellow);
     }
     void Update()
     {
@@ -56,7 +61,7 @@ public:
     float speed;
     void Draw() const
     {
-        DrawRectangle(x, y, width, height, WHITE);
+        DrawRectangleRounded(Rectangle{x, y, width, height}, 0.8, 0, WHITE);
     }
     void Update()
     {
@@ -155,9 +160,11 @@ int main()
 
         // Drawing
         BeginDrawing();
-        ClearBackground(BLACK);
-
+        ClearBackground(darkGreen);
+        DrawRectangle(screen_width / 2, 0, screen_width / 2, screen_height, green); // right side of field
+        DrawCircle(screen_width / 2, screen_height / 2, 150, lightGreen);
         DrawLine(screen_width / 2, 0, screen_width / 2, screen_height, WHITE);
+
         ball.Draw();
         cpu.Draw();
         player.Draw();
