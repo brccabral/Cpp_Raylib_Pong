@@ -42,6 +42,21 @@ public:
     {
         DrawRectangle(x, y, width, height, WHITE);
     }
+    void Update()
+    {
+        if(IsKeyDown(KEY_UP))
+        {
+            y -= speed;
+        }
+        if(IsKeyDown(KEY_DOWN))
+        {
+            y += speed;
+        }
+        if(y<=0)
+        {y=0;}
+        if(y+height>=GetScreenHeight())
+        {y=GetScreenHeight()-height;}
+    }
 };
 
 Paddle player;
@@ -62,12 +77,13 @@ int main()
     player.width = 25;
     player.height = 120;
     player.x = screen_width - player.width - 10;
-    player.y = screen_height /2 - player.height/2;
+    player.y = screen_height / 2 - player.height / 2;
     player.speed = 6;
 
     while (!WindowShouldClose())
     {
         ball.Update();
+        player.Update();
 
         BeginDrawing();
         ClearBackground(BLACK);
