@@ -4,13 +4,18 @@ class Ball
 {
 public:
 
-    Ball();
+    Ball() : x(20), y(20), speed_x(7), speed_y(7), radius(20){};
     float x, y;
-    int speed_x, speed_y;
+    float speed_x, speed_y;
     float radius;
     void Draw() const
     {
         DrawCircle(static_cast<int>(x), static_cast<int>(y), radius, WHITE);
+    }
+    void Update()
+    {
+            x += speed_x;
+        y += speed_y;
     }
 };
 
@@ -26,12 +31,15 @@ int main()
     ball.radius = 20.0f;
     ball.x = static_cast<float>(screen_width) / 2.0f;
     ball.y = static_cast<float>(screen_height) / 2.0f;
-    ball.speed_x = 7;
-    ball.speed_y = 7;
+    ball.speed_x = 7.0f;
+    ball.speed_y = 7.0f;
 
     while (!WindowShouldClose())
     {
+        ball.Update();
+
         BeginDrawing();
+        ClearBackground(BLACK);
 
         // Drawing
         DrawLine(screen_width / 2, 0, screen_width / 2, screen_height, WHITE);
