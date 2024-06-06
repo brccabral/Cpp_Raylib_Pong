@@ -55,6 +55,7 @@ public:
         LimitMovement();
     }
 protected:
+
     void LimitMovement()
     {
         if (y <= 0)
@@ -70,19 +71,20 @@ protected:
 
 Paddle player;
 
-class CpuPaddle: public Paddle
+class CpuPaddle : public Paddle
 {
 public:
+
     void Update(const int ball_y)
     {
         // cpu follows the ball
-        if(y+height/2>ball_y)
+        if (y + height / 2 > ball_y)
         {
-            y-=speed;
+            y -= speed;
         }
-        if(y+height/2<=ball_y)
+        if (y + height / 2 <= ball_y)
         {
-            y+=speed;
+            y += speed;
         }
         LimitMovement();
     }
@@ -112,7 +114,7 @@ int main()
     cpu.height = 120;
     cpu.width = 25;
     cpu.x = 10;
-    cpu.y = screen_height / 2 - cpu.height /2;
+    cpu.y = screen_height / 2 - cpu.height / 2;
     cpu.speed = 6;
 
     while (!WindowShouldClose())
