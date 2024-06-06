@@ -1,5 +1,8 @@
 #include <raylib.h>
 
+int player_score = 0;
+int cpu_score = 0;
+
 class Ball
 {
 public:
@@ -21,10 +24,23 @@ public:
         {
             speed_y *= -1;
         }
-        if (x + radius >= GetScreenWidth() || x - radius < 0)
+        if (x + radius >= GetScreenWidth())
         {
-            speed_x *= -1;
+            cpu_score++;
+            ResetBall();
         }
+        if (x - radius < 0)
+        {
+            player_score++;
+            ResetBall();
+        }
+    }
+    void ResetBall()
+    {
+        x = GetScreenWidth() / 2;
+        y = GetScreenHeight() / 2;
+        speed_x *= GetRandomValue(0, 1) * 2 - 1;
+        speed_y *= GetRandomValue(0, 1) * 2 - 1;
     }
 };
 
@@ -54,6 +70,7 @@ public:
         }
         LimitMovement();
     }
+
 protected:
 
     void LimitMovement()
@@ -144,6 +161,9 @@ int main()
         ball.Draw();
         cpu.Draw();
         player.Draw();
+
+        DrawText(TextFormat("%i", cpu_score), screen_width / 4 - 20, 20, 80, WHITE);
+        DrawText(TextFormat("%i", player_score), 3 * screen_width / 4 - 20, 20, 80, WHITE);
 
         EndDrawing();
     }
