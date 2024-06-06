@@ -44,22 +44,51 @@ public:
     }
     void Update()
     {
-        if(IsKeyDown(KEY_UP))
+        if (IsKeyDown(KEY_UP))
         {
             y -= speed;
         }
-        if(IsKeyDown(KEY_DOWN))
+        if (IsKeyDown(KEY_DOWN))
         {
             y += speed;
         }
-        if(y<=0)
-        {y=0;}
-        if(y+height>=GetScreenHeight())
-        {y=GetScreenHeight()-height;}
+        LimitMovement();
+    }
+protected:
+    void LimitMovement()
+    {
+        if (y <= 0)
+        {
+            y = 0;
+        }
+        if (y + height >= GetScreenHeight())
+        {
+            y = GetScreenHeight() - height;
+        }
     }
 };
 
 Paddle player;
+
+class CpuPaddle: public Paddle
+{
+public:
+    void Update(const int ball_y)
+    {
+        // cpu follows the ball
+        if(y+height/2>ball_y)
+        {
+            y-=speed;
+        }
+        if(y+height/2<=ball_y)
+        {
+            y+=speed;
+        }
+        LimitMovement();
+    }
+};
+
+CpuPaddle cpu;
 
 int main()
 {
@@ -80,10 +109,17 @@ int main()
     player.y = screen_height / 2 - player.height / 2;
     player.speed = 6;
 
+    cpu.height = 120;
+    cpu.width = 25;
+    cpu.x = 10;
+    cpu.y = screen_height / 2 - cpu.height /2;
+    cpu.speed = 6;
+
     while (!WindowShouldClose())
     {
         ball.Update();
         player.Update();
+        cpu.Update(ball.y);
 
         BeginDrawing();
         ClearBackground(BLACK);
@@ -91,7 +127,7 @@ int main()
         // Drawing
         DrawLine(screen_width / 2, 0, screen_width / 2, screen_height, WHITE);
         ball.Draw();
-        DrawRectangle(10, screen_height / 2 - 60, 25, 120, WHITE);
+        cpu.Draw();
         player.Draw();
 
         EndDrawing();
