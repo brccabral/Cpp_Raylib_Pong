@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.20)
 project(Pong)
 
 include(GNUInstallDirs)
@@ -9,16 +9,9 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} raylib)
 install(TARGETS ${PROJECT_NAME})
 
-# copy resources to Build folder for debugging
-set(resources_list)
-file(GLOB resources_files resources/*)
-list(APPEND resources_list ${resources_files})
-file(COPY ${resources_files} DESTINATION "resources/")
-
-# copy resources to Install location
-install(DIRECTORY
-        ${PROJECT_SOURCE_DIR}/resources
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}
-)
-
-
+if (WIN32)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${RAYLIB_PATH}/include)
+    target_link_directories(${PROJECT_NAME} PRIVATE ${RAYLIB_PATH}/lib)
+    target_link_libraries(${PROJECT_NAME} gdi32 msvcrt winmm)
+    set(COMPILE_FLAGS "/NODEFAULTLIB:libcmt")
+endif ()
